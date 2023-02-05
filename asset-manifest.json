@@ -1,22 +1,15 @@
 {
   "files": {
-    "main.css": "/kitchen-food-ordering/static/css/main.67eb5f6b.chunk.css",
-    "main.js": "/kitchen-food-ordering/static/js/main.71ebb58f.chunk.js",
-    "main.js.map": "/kitchen-food-ordering/static/js/main.71ebb58f.chunk.js.map",
-    "runtime-main.js": "/kitchen-food-ordering/static/js/runtime-main.abb04edf.js",
-    "runtime-main.js.map": "/kitchen-food-ordering/static/js/runtime-main.abb04edf.js.map",
-    "static/js/2.adcb9023.chunk.js": "/kitchen-food-ordering/static/js/2.adcb9023.chunk.js",
-    "static/js/2.adcb9023.chunk.js.map": "/kitchen-food-ordering/static/js/2.adcb9023.chunk.js.map",
+    "main.css": "/kitchen-food-ordering/static/css/main.9d06e177.css",
+    "main.js": "/kitchen-food-ordering/static/js/main.92b7f966.js",
+    "static/js/787.4987f6c1.chunk.js": "/kitchen-food-ordering/static/js/787.4987f6c1.chunk.js",
     "index.html": "/kitchen-food-ordering/index.html",
-    "precache-manifest.f7347bdf5fd533221e070491d500602c.js": "/kitchen-food-ordering/precache-manifest.f7347bdf5fd533221e070491d500602c.js",
-    "service-worker.js": "/kitchen-food-ordering/service-worker.js",
-    "static/css/main.67eb5f6b.chunk.css.map": "/kitchen-food-ordering/static/css/main.67eb5f6b.chunk.css.map",
-    "static/js/2.adcb9023.chunk.js.LICENSE.txt": "/kitchen-food-ordering/static/js/2.adcb9023.chunk.js.LICENSE.txt"
+    "main.9d06e177.css.map": "/kitchen-food-ordering/static/css/main.9d06e177.css.map",
+    "main.92b7f966.js.map": "/kitchen-food-ordering/static/js/main.92b7f966.js.map",
+    "787.4987f6c1.chunk.js.map": "/kitchen-food-ordering/static/js/787.4987f6c1.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.abb04edf.js",
-    "static/js/2.adcb9023.chunk.js",
-    "static/css/main.67eb5f6b.chunk.css",
-    "static/js/main.71ebb58f.chunk.js"
+    "static/css/main.9d06e177.css",
+    "static/js/main.92b7f966.js"
   ]
 }
