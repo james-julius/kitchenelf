@@ -58,6 +58,7 @@ const App = () => {
         console.log(data);
       })
       .catch((error) => {
+        setItems([]);
         console.log(error);
       });
   }, []);
@@ -118,7 +119,7 @@ const App = () => {
               <ItemCard key={item.fields.name} item={item} onClick={() => handleOrder(item)} />
        ))
         ) : (
-          <p>No items found. Would you like to add a new item?</p>
+          <p>No items found. Probably the Airtable API Key isn't correct. Try again!</p>
         )}
       </SimpleGrid>
       {showPopup && (
