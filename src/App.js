@@ -130,8 +130,8 @@ const App = () => {
           <Button m={2} onClick={handleCancel}>No</Button>
         </div>
       )}
-      <Button m={5} onClick={clearWebhookURL}>Clear Webhook URL</Button>
-      <Button m={5} onClick={clearAirtableAPIKey}>Clear Airtable API Key</Button>
+      <Button m={5} onClick={clearWebhookURL}>Reset Discord Webhook URL</Button>
+      <Button m={5} onClick={clearAirtableAPIKey}>Reset Airtable API Key</Button>
       </div>
     </>
   );  ;
