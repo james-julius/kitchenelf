@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/kitchen-food-ordering/static/css/main.9d06e177.css",
-    "main.js": "/kitchen-food-ordering/static/js/main.9d5110ac.js",
+    "main.css": "/kitchen-food-ordering/static/css/main.f16982d8.css",
+    "main.js": "/kitchen-food-ordering/static/js/main.bcde2123.js",
     "static/js/787.4987f6c1.chunk.js": "/kitchen-food-ordering/static/js/787.4987f6c1.chunk.js",
     "index.html": "/kitchen-food-ordering/index.html",
-    "main.9d06e177.css.map": "/kitchen-food-ordering/static/css/main.9d06e177.css.map",
-    "main.9d5110ac.js.map": "/kitchen-food-ordering/static/js/main.9d5110ac.js.map",
+    "main.f16982d8.css.map": "/kitchen-food-ordering/static/css/main.f16982d8.css.map",
+    "main.bcde2123.js.map": "/kitchen-food-ordering/static/js/main.bcde2123.js.map",
     "787.4987f6c1.chunk.js.map": "/kitchen-food-ordering/static/js/787.4987f6c1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9d06e177.css",
-    "static/js/main.9d5110ac.js"
+    "static/css/main.f16982d8.css",
+    "static/js/main.bcde2123.js"
   ]
 }
