@@ -1,21 +1,21 @@
-.card {
+/* .card {
     width: 200px;
     height: 300px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     transform: scale(1);
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
-  }
-
+  } */
+/*
   .selected {
     transform: scale(1.05);
-  }
+  } */
 
-  .grid {
+  /* .grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-  }
+  } */
 
   .popup {
     position: fixed;
@@ -37,17 +37,17 @@
     cursor: pointer;
   }
 
-  button:first-child {
+  /* button:first-child {
     background-color: green;
     color: white;
-  }
-
+  } */
+/*
   button:last-child {
     background-color: red;
     color: white;
-  }
+  } */
 
-  .clearWebhook {
+  /* .clearWebhook {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,4 +56,4 @@
     padding: 10px 20px;
     margin: 20px auto;
   }
-
+ */

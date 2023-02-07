@@ -3,6 +3,14 @@ import axios from 'axios';
 import './App.css';
 import ItemCard from './components/ItemCard';
 import { SimpleGrid, Button, Input } from '@chakra-ui/react';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Box,
+} from '@chakra-ui/react'
 
 
 const App = () => {
@@ -130,8 +138,24 @@ const App = () => {
           <Button m={2} onClick={handleCancel}>No</Button>
         </div>
       )}
-      <Button m={5} onClick={clearWebhookURL}>Reset Discord Webhook URL</Button>
-      <Button m={5} onClick={clearAirtableAPIKey}>Reset Airtable API Key</Button>
+
+<Accordion allowToggle>
+  <AccordionItem>
+    <h2>
+      <AccordionButton>
+        <Box as="span" flex='1' textAlign='left'>
+          Settings
+        </Box>
+        <AccordionIcon />
+      </AccordionButton>
+    </h2>
+    <AccordionPanel pb={4}>
+      <Button  onClick={clearWebhookURL}>Reset Discord Webhook URL</Button>
+      <Button  onClick={clearAirtableAPIKey}>Reset Airtable API Key</Button>
+
+    </AccordionPanel>
+  </AccordionItem>
+  </Accordion>
       </div>
     </>
   );  ;
