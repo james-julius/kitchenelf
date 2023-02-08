@@ -71,14 +71,14 @@ const App = () => {
       });
   }, []);
 
+  const reloadPage = () => {
+    window.location.reload();
+  }
+
   const handleOrder = item => {
     setSelectedItem(item);
     setShowPopup(true);
   };
-
-  // const handleSearch = (e) => {
-  //   setSearchTerm(e.target.value);
-  // };
 
   const filteredItems = items.filter((item) =>
     item.fields.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -94,12 +94,12 @@ const App = () => {
       console.error(error);
     }
     console.log(selectedItem.fields.name);
-    setShowPopup(false);
+    // setShowPopup(false);
   };
 
-  const handleCancel = () => {
-    setShowPopup(false);
-  };
+  // const handleCancel = () => {
+  //   setShowPopup(false);
+  // };
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -124,20 +124,20 @@ const App = () => {
       <SimpleGrid m={5} minChildWidth='200px' spacing='40px'>
       {filteredItems.length ? (
           filteredItems.map(item => (
-              <ItemCard key={item.fields.name} item={item} onClick={() => handleOrder(item)} />
+              <ItemCard key={item.fields.name} item={item} onClick={() => handleOrder(item)} handleConfirm={handleConfirm}/>
        ))
         ) : (
           <p>No items found. Probably the Airtable API Key isn't correct. Try again!</p>
         )}
       </SimpleGrid>
-      {showPopup && (
+      {/* {showPopup && (
         <div className="popup">
           <p>Hi, I'm the Kitchen Elf!</p>
           <p>Are you sure you want to order {selectedItem.fields.name}?</p>
           <Button m={2} onClick={handleConfirm}>Yes</Button>
           <Button m={2} onClick={handleCancel}>No</Button>
         </div>
-      )}
+      )} */}
 
 <Accordion allowToggle>
   <AccordionItem>
@@ -150,8 +150,9 @@ const App = () => {
       </AccordionButton>
     </h2>
     <AccordionPanel pb={4}>
-      <Button  onClick={clearWebhookURL}>Reset Discord Webhook URL</Button>
-      <Button  onClick={clearAirtableAPIKey}>Reset Airtable API Key</Button>
+      <Button m={2} onClick={clearWebhookURL}>Reset Discord Webhook URL</Button>
+      <Button m={2} onClick={clearAirtableAPIKey}>Reset Airtable API Key</Button>
+      <Button m={2} onClick={reloadPage}>Refresh Page</Button>
 
     </AccordionPanel>
   </AccordionItem>
