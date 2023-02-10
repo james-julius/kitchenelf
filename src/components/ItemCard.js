@@ -58,7 +58,11 @@ const ItemCard = ({ item, onClick, ...rest }) => {
           m={2}
           bgColor="green"
           color="white"
-          onClick={handleConfirm}
+          onClick={() => {
+            handleConfirm();
+            onClose();
+          }
+        }
           >Yes</Button>
           <Button
             m={2}
