@@ -1,10 +1,39 @@
 // import {  Card, CardHeader, Heading, Image } from '@chakra-ui/react'
-import { useDisclosure, PopoverHeader, Card, CardHeader, Heading, Image , Popover, PopoverTrigger, PopoverArrow, PopoverContent, PopoverCloseButton, PopoverBody, Button} from '@chakra-ui/react'
+import { useToast, useDisclosure, PopoverHeader, Card, CardHeader, Heading, Image, Popover, PopoverTrigger, PopoverArrow, PopoverContent, PopoverBody, Button } from '@chakra-ui/react'
+
+import axios from 'axios';
+
+const ItemCard = ({ item, onClick, ...rest }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+
+  const handleConfirm = async () => {
+    const discordUrl = localStorage.getItem('webhookURL')
+    // console.log('webhookURL',discordUrl);
+
+    const itemToOrder = item.fields.name;
+    try {
+      await axios.post(discordUrl, { content: `${itemToOrder}` });
+      console.log('Ordering:',itemToOrder);
+      toast({
+        title: "Order successful",
+        description: `I sent ${itemToOrder} to the discord channel`,
+        status: "success",
+        duration: 3000,
+      })
+      // setLastOrdered(new Date().toLocaleDateString());
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: `${error}`,
+        status: "error",
+        duration: 7000,
+      })
+    }
+  };
 
 
-const ItemCard = ({item, handleConfirm, ...rest}) => {
-
-  const { isOpen, onToggle, onOpen, onClose } = useDisclosure();
 
   return (
     <Popover
@@ -23,10 +52,20 @@ const ItemCard = ({item, handleConfirm, ...rest}) => {
       <PopoverContent>
         <PopoverArrow />
         <PopoverHeader>Hi, I'm the Kitchen Elf!</PopoverHeader>
-        <PopoverBody>
+        <PopoverBody m={2}>
           <p>Are you sure you want to order {item.fields.name}?</p>
-          <Button onClick={handleConfirm}>Yes</Button>
-          <Button onClick={onClose}>No</Button>
+          <Button
+          m={2}
+          bgColor="green"
+          color="white"
+          onClick={handleConfirm}
+          >Yes</Button>
+          <Button
+            m={2}
+            bgColor="red"
+            color="white"
+            onClick={onClose}
+            >No</Button>
         </PopoverBody>
       </PopoverContent>
     </Popover>
