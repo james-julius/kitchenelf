@@ -106,7 +106,13 @@ const App = () => {
         <Input m={5} type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="Search for an item" />
         <SimpleGrid m={5} minChildWidth='200px' spacing='40px'>
           {filteredItems.length ? (
-            filteredItems.map(item => (
+            filteredItems
+              .sort(function(a, b) {
+                if(a.fields.name < b.fields.name) return -1;
+                if(a.fields.name > b.fields.name) return 1;
+                return 0;
+              })
+              .map(item => (
               <ItemCard key={item.fields.name} item={item} />
             ))
           ) : (
