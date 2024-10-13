@@ -1,5 +1,4 @@
-// import {  Card, CardHeader, Heading, Image } from '@chakra-ui/react'
-import { useToast, useDisclosure, PopoverHeader, Card, CardHeader, Heading, Image, Popover, PopoverTrigger, PopoverArrow, PopoverContent, PopoverBody, Button } from '@chakra-ui/react'
+import { Text, Link, useToast, useDisclosure, PopoverHeader, Card, CardHeader, Heading, Image, Popover, PopoverTrigger, PopoverArrow, PopoverContent, PopoverBody, Button, Box } from '@chakra-ui/react'
 
 import axios from 'axios';
 
@@ -33,8 +32,6 @@ const ItemCard = ({ item, onClick, ...rest }) => {
     }
   };
 
-
-
   return (
     <Popover
       isOpen={isOpen}
@@ -42,11 +39,21 @@ const ItemCard = ({ item, onClick, ...rest }) => {
       onClose={onClose}
     >
       <PopoverTrigger>
-        <Card cursor="pointer" maxWidth="400px">
-          <Image src={item.fields.image} borderRadius="lg" />
-          <CardHeader>
-            <Heading size="md">{item.fields.name}</Heading>
-          </CardHeader>
+        <Card cursor="pointer" maxWidth="400px" display="flex" flexDirection="column" borderRadius="lg" overflow="clip" minH="300px">
+          <Box h="80%" w="full" display="flex" justifyContent="center" alignItems="center">
+            <Image src={item.fields.image} objectPosition="center" h="full" objectFit="cover" flexGrow={1}/>
+          </Box>
+          <Box h="20%">
+            <CardHeader borderTop="1px solid lightgray" p={2}>
+              <Heading size={{
+                base: 'sm',
+                lg: 'md'
+              }}>{item.fields.name}</Heading>
+              <Text fontSize="xs" mt={1}>
+                Photo by <Link href={`https://unsplash.com/@${item.fields.photographer_username}?utm_source=your_app_name&utm_medium=referral`} isExternal>{item.fields.photographer_name}</Link> on <Link href="https://unsplash.com/?utm_source=your_app_name&utm_medium=referral" isExternal>Unsplash</Link>
+              </Text>
+            </CardHeader>
+          </Box>
         </Card>
       </PopoverTrigger>
       <PopoverContent>
@@ -55,14 +62,14 @@ const ItemCard = ({ item, onClick, ...rest }) => {
         <PopoverBody m={2}>
           <p>Are you sure you want to order {item.fields.name}?</p>
           <Button
-          m={2}
-          bgColor="green"
-          color="white"
-          onClick={() => {
-            handleConfirm();
-            onClose();
-          }
-        }
+            m={2}
+            bgColor="green"
+            color="white"
+            onClick={() => {
+                handleConfirm();
+                onClose();
+              }
+            }
           >Yes</Button>
           <Button
             m={2}

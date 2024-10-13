@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
-
+import { Box, Text } from '@chakra-ui/react';
 import './App.css';
 import ItemCard from './components/ItemCard';
-import { SimpleGrid, Button, Input } from '@chakra-ui/react';
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Box,
-} from '@chakra-ui/react'
+import SettingsModal from './components/SettingsModal';
+import { SimpleGrid, Input } from '@chakra-ui/react';
+import AddNewItemModal from './components/AddNewItemModal';
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
   // const [lastOrdered, setLastOrdered] = useState(new Date().toLocaleDateString());
   const [shouldPromptForWebhookURL, setShouldPromptForWebhookURL] = useState(false);
   const [shouldPromptForAirtableAPI_KEY, setShouldPromptForAirtableAPI_KEY] = useState(false);
@@ -29,11 +24,6 @@ const App = () => {
     return webhookURL;
   };
 
-  const clearWebhookURL = () => {
-    localStorage.removeItem('webhookURL');
-    setShouldPromptForWebhookURL(true);
-  };
-
   // Prompt for webhook url on page load
   useEffect(() => promptForWebhookURL, []);
 
@@ -45,7 +35,6 @@ const App = () => {
     }
   }, [shouldPromptForWebhookURL]);
 
-
   const promptForAirtableAPIKey = () => {
     let airtableAPI_KEY = localStorage.getItem('airtableAPI_KEY');
 
@@ -55,11 +44,6 @@ const App = () => {
     }
 
     return airtableAPI_KEY;
-  };
-
-  const clearAirtableAPIKey = () => {
-    localStorage.removeItem('airtableAPI_KEY');
-    setShouldPromptForAirtableAPI_KEY(true);
   };
 
   // Prompt for Airtable API Key on page load
@@ -77,11 +61,13 @@ const App = () => {
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-
   useEffect(() => {
     const airtableAPI_KEY = localStorage.getItem('airtableAPI_KEY')
-    // const airtableAPI_KEY = null
-    fetch(`https://api.airtable.com/v0/app23j6JIk0UIbaxW/items?api_key=${airtableAPI_KEY}`)
+    fetch(`https://api.airtable.com/v0/app23j6JIk0UIbaxW/items`, {
+      headers: {
+        'Authorization': `Bearer ${airtableAPI_KEY}`
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
         setItems(data.records);
@@ -89,59 +75,45 @@ const App = () => {
       })
       .catch((error) => {
         console.log(error);
-      });
+      })
+      .finally(() => setLoading(false))
   }, []);
 
-  const reloadPage = () => {
-    window.location.reload();
-  }
 
   const filteredItems = items.filter((item) =>
     item.fields.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <>
-      <div>
-        <Input m={5} type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="Search for an item" />
-        <SimpleGrid m={5} minChildWidth='200px' spacing='40px'>
-          {filteredItems.length ? (
-            filteredItems
-              .sort(function(a, b) {
-                if(a.fields.name < b.fields.name) return -1;
-                if(a.fields.name > b.fields.name) return 1;
-                return 0;
-              })
-              .map(item => (
-              <ItemCard key={item.fields.name} item={item} />
-            ))
-          ) : (
-            <p>No items found. Probably the Airtable API Key isn't correct. Try again!</p>
-          )}
-        </SimpleGrid>
-
-
-        <Accordion allowToggle>
-          <AccordionItem>
-            <h2>
-              <AccordionButton>
-                <Box as="span" flex='1' textAlign='left'>
-                  Settings
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
-              <Button m={2} onClick={() => { clearWebhookURL() }}>Reset Discord Webhook URL</Button>
-              <Button m={2} onClick={() => { clearAirtableAPIKey() }}>Reset Airtable API Key</Button>
-              <Button m={2} onClick={reloadPage}>Refresh Page</Button>
-
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-      </div>
-    </>
-  );;
+    <Box w="100dvw" maxW="100dvw" bg="gray.100">
+      <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="nowrap" p={5} w="100dvw" gap={3} position="fixed" zIndex={2} top={0} h={20} bg="gray.100" border="1px solid lightgray">
+        <Input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="Search for an existing item"  bg="white"/>
+        <Text>or</Text>
+        <AddNewItemModal />
+      </Box>
+      <SimpleGrid mt={20} mb={5} px={5} columns={[2, 3, 3, 5, 'auto']} spacing={5} h="full" overflow="scroll" flexGrow zIndex={1}>
+        {filteredItems.length ? (
+          filteredItems
+            .sort(function(a, b) {
+              if(a.fields.name < b.fields.name) return -1;
+              if(a.fields.name > b.fields.name) return 1;
+              return 0;
+            })
+            .map(item => (
+            <ItemCard key={item.fields.name} item={item} />
+          ))
+        ) : (
+        loading ? <p>Loading...</p> : <p>No items found. Probably the Airtable API Key isn't correct. Try again!</p>
+        )}
+      </SimpleGrid>
+      <Box w="full" borderTop="1px solid lightgray" position="fixed" bottom={0} display="flex" justifyContent="items-center" zIndex={2}>
+        <SettingsModal
+          setShouldPromptForWebhookURL={setShouldPromptForWebhookURL}
+          setShouldPromptForAirtableAPI_KEY={setShouldPromptForAirtableAPI_KEY}
+        />
+      </Box>
+    </Box>
+  );
 };
 
 export default App;
