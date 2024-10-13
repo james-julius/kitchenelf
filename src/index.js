@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react'
 // import axios from 'axios';
 
+document.title = 'KitchenElf';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

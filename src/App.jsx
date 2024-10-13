@@ -12,7 +12,9 @@ const App = () => {
   const [shouldPromptForWebhookURL, setShouldPromptForWebhookURL] = useState(false);
   const [shouldPromptForAirtableAPI_KEY, setShouldPromptForAirtableAPI_KEY] = useState(false);
   const [shouldPromptForUnsplashAPI_KEY, setShouldPromptForUnsplashAPI_KEY] = useState(false);
-
+  const handleRefreshItems = () => {
+    fetchAirtableItems();
+  };
   const promptForWebhookURL = () => {
     let webhookURL = localStorage.getItem('webhookURL');
 
@@ -21,7 +23,7 @@ const App = () => {
       localStorage.setItem('webhookURL', webhookURL);
     }
 
-    console.log('webhookURL', webhookURL);
+    // console.log('webhookURL', webhookURL);
     return webhookURL;
   };
 
@@ -85,7 +87,7 @@ const App = () => {
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
+  const fetchAirtableItems = () => {
     const airtableAPI_KEY = localStorage.getItem('airtableAPI_KEY')
     fetch(`https://api.airtable.com/v0/app23j6JIk0UIbaxW/items`, {
       headers: {
@@ -99,7 +101,10 @@ const App = () => {
       .catch((error) => {
         console.log(error);
       })
-      .finally(() => setLoading(false))
+      .finally(() => { setLoading(false); })
+  }
+  useEffect(() => {
+    fetchAirtableItems();
   }, []);
 
 
@@ -112,7 +117,7 @@ const App = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="nowrap" p={5} w="100dvw" gap={3} position="fixed" zIndex={2} top={0} h={20} bg="gray.100" border="1px solid lightgray">
         <Input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="Search for an existing item"  bg="white"/>
         <Text>or</Text>
-        <AddNewItemModal />
+        <AddNewItemModal onAddNewItem={handleRefreshItems} />
       </Box>
       {loading ? <Skeleton h="full" w="full" /> :
         <SimpleGrid mt={20} mb={5} px={5} columns={[2, 3, 3, 5, 'auto']} spacing={5} h="full" overflow="scroll" flexGrow zIndex={1} pt={5} pb={20}>

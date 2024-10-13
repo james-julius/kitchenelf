@@ -15,7 +15,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 
-export default function AddNewItemModal () {
+export default function AddNewItemModal ({ onAddNewItem }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [newItemName, setNewItemName] = useState('');
     const toast = useToast();
@@ -59,6 +59,8 @@ export default function AddNewItemModal () {
                 duration: 3000,
                 isClosable: true,
             });
+        } finally {
+            onAddNewItem();
         }
     };
 
