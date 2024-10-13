@@ -112,6 +112,10 @@ const App = () => {
     item.fields.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleDeleteItem = (deletedItemId) => {
+    setItems(items.filter(item => item.id !== deletedItemId));
+  }
+
   return (
     <Box w="100dvw" maxW="100dvw" bg="gray.100">
       <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="nowrap" p={5} w="100dvw" gap={3} position="fixed" zIndex={2} top={0} h={20} bg="gray.100" border="1px solid lightgray">
@@ -129,7 +133,7 @@ const App = () => {
                 return 0;
               })
               .map(item => (
-                <ItemCard key={item.fields.name} item={item} />
+                <ItemCard key={item.fields.name} item={item} onDelete={handleDeleteItem} />
               ))
           ) : (
             <p>No items found. Probably the Airtable API Key isn't correct. Try again!</p>

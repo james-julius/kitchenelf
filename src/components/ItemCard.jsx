@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useToast, useDisclosure, PopoverHeader, Card, CardHeader, Heading, Image, Popover, PopoverTrigger, PopoverArrow, PopoverContent, PopoverBody, Button, Box, Skeleton } from '@chakra-ui/react'
+import { useToast, useDisclosure, PopoverHeader, Card, CardHeader, Heading, Image, Popover, PopoverTrigger, PopoverArrow, PopoverContent, PopoverBody, Button, Box, Skeleton, IconButton, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react'
+import { CloseIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 
-const ItemCard = ({ item, onClick, ...rest }) => {
+const ItemCard = ({ item, onClick, onDelete, ...rest }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
+  const cancelRef = React.useRef();
   const toast = useToast();
   const [imageUrl, setImageUrl] = useState('');
   // const [photographer, setPhotographer] = useState({ name: '', username: '' });
@@ -94,6 +97,42 @@ const ItemCard = ({ item, onClick, ...rest }) => {
     }
   };
 
+  const handleDelete = async () => {
+    const airtableAPI_KEY = localStorage.getItem('airtableAPI_KEY');
+    try {
+      const deleteResponse = await fetch(`https://api.airtable.com/v0/app23j6JIk0UIbaxW/items/${item.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${airtableAPI_KEY}`,
+        },
+      });
+
+      if (!deleteResponse.ok) {
+        throw new Error('Failed to delete item from Airtable');
+      }
+
+      toast({
+        title: "Item deleted",
+        description: `${item.fields.name} has been deleted successfully`,
+        status: "success",
+        duration: 3000,
+      });
+
+      if (onDelete) {
+        onDelete(item.id);
+      }
+    } catch (error) {
+      console.error('Error deleting item:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete item. Please try again.",
+        status: "error",
+        duration: 3000,
+      });
+    }
+    setIsDeleteAlertOpen(false);
+  };
+
   return (
     <Popover
       isOpen={isOpen}
@@ -101,7 +140,19 @@ const ItemCard = ({ item, onClick, ...rest }) => {
       onClose={onClose}
     >
       <PopoverTrigger>
-        <Card cursor="pointer" maxWidth="400px" display="flex" flexDirection="column" borderRadius="lg" overflow="clip" minH="300px">
+        <Card cursor="pointer" maxWidth="400px" display="flex" flexDirection="column" borderRadius="lg" overflow="clip" minH="300px" position="relative">
+          <IconButton
+            icon={<CloseIcon />}
+            size="sm"
+            position="absolute"
+            top={2}
+            right={2}
+            zIndex={1}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsDeleteAlertOpen(true);
+            }}
+          />
           <Box h="85%" w="full" display="flex" justifyContent="center" alignItems="center">
             <Skeleton isLoaded={!isLoading} h="full" w="full">
               <Image src={airtableImage ?? imageUrl} fallbackSrc="https://via.placeholder.com/400x300?text=Image+Not+Found" objectPosition="center" h="full" w="full" objectFit="cover"/>
@@ -113,11 +164,6 @@ const ItemCard = ({ item, onClick, ...rest }) => {
                 base: 'sm',
                 lg: 'md'
               }}>{item.fields.name}</Heading>
-              {/* {hasUnsplashImage && <Skeleton isLoaded={!isLoading}>
-                <Text fontSize="xs" mt={1}>
-                  Photo by <Link href={`https://unsplash.com/@${photographer.username}?utm_source=kitchenelf&utm_medium=referral`} isExternal>{photographer.name}</Link> on <Link href="https://unsplash.com/?utm_source=your_app_name&utm_medium=referral" isExternal>Unsplash</Link>
-                </Text>
-              </Skeleton>} */}
             </CardHeader>
           </Box>
         </Card>
@@ -145,6 +191,33 @@ const ItemCard = ({ item, onClick, ...rest }) => {
             >No</Button>
         </PopoverBody>
       </PopoverContent>
+
+      <AlertDialog
+        isOpen={isDeleteAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={() => setIsDeleteAlertOpen(false)}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Item
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete {item.fields.name}? This action cannot be undone.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={() => setIsDeleteAlertOpen(false)}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Popover>
   );
 };
