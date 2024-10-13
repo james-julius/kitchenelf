@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Skeleton, Text } from '@chakra-ui/react';
 import './App.css';
 import ItemCard from './components/ItemCard';
 import SettingsModal from './components/SettingsModal';
@@ -11,6 +11,7 @@ const App = () => {
   // const [lastOrdered, setLastOrdered] = useState(new Date().toLocaleDateString());
   const [shouldPromptForWebhookURL, setShouldPromptForWebhookURL] = useState(false);
   const [shouldPromptForAirtableAPI_KEY, setShouldPromptForAirtableAPI_KEY] = useState(false);
+  const [shouldPromptForUnsplashAPI_KEY, setShouldPromptForUnsplashAPI_KEY] = useState(false);
 
   const promptForWebhookURL = () => {
     let webhookURL = localStorage.getItem('webhookURL');
@@ -58,6 +59,29 @@ const App = () => {
   }, [shouldPromptForAirtableAPI_KEY]);
 
 
+  const promptForUnsplashAPIKey = () => {
+    let unsplashAPI_KEY = localStorage.getItem('UnsplashAPI_KEY');
+
+    if (!unsplashAPI_KEY) {
+      unsplashAPI_KEY = prompt('Please enter your Unsplash API Key:');
+      localStorage.setItem('UnsplashAPI_KEY', unsplashAPI_KEY);
+    }
+
+    return unsplashAPI_KEY;
+  };
+
+  // Prompt for Unsplash API Key on page load
+  useEffect(() => promptForUnsplashAPIKey, []);
+
+  // Prompt for Unsplash API Key again if cancelled
+  useEffect(() => {
+    if (shouldPromptForUnsplashAPI_KEY) {
+      promptForUnsplashAPIKey();
+      setShouldPromptForUnsplashAPI_KEY(false);
+    }
+  }, [shouldPromptForUnsplashAPI_KEY]);
+
+
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -71,7 +95,6 @@ const App = () => {
       .then((res) => res.json())
       .then((data) => {
         setItems(data.records);
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);
@@ -91,25 +114,27 @@ const App = () => {
         <Text>or</Text>
         <AddNewItemModal />
       </Box>
-      <SimpleGrid mt={20} mb={5} px={5} columns={[2, 3, 3, 5, 'auto']} spacing={5} h="full" overflow="scroll" flexGrow zIndex={1}>
-        {filteredItems.length ? (
-          filteredItems
-            .sort(function(a, b) {
-              if(a.fields.name < b.fields.name) return -1;
-              if(a.fields.name > b.fields.name) return 1;
-              return 0;
-            })
-            .map(item => (
-            <ItemCard key={item.fields.name} item={item} />
-          ))
-        ) : (
-        loading ? <p>Loading...</p> : <p>No items found. Probably the Airtable API Key isn't correct. Try again!</p>
-        )}
-      </SimpleGrid>
+      {loading ? <Skeleton h="full" w="full" /> :
+        <SimpleGrid mt={20} mb={5} px={5} columns={[2, 3, 3, 5, 'auto']} spacing={5} h="full" overflow="scroll" flexGrow zIndex={1} pt={5} pb={20}>
+          {filteredItems.length ? (
+            filteredItems
+              .sort(function (a, b) {
+                if (a.fields.name < b.fields.name) return -1;
+                if (a.fields.name > b.fields.name) return 1;
+                return 0;
+              })
+              .map(item => (
+                <ItemCard key={item.fields.name} item={item} />
+              ))
+          ) : (
+            <p>No items found. Probably the Airtable API Key isn't correct. Try again!</p>
+          )}
+        </SimpleGrid>}
       <Box w="full" borderTop="1px solid lightgray" position="fixed" bottom={0} display="flex" justifyContent="items-center" zIndex={2}>
         <SettingsModal
           setShouldPromptForWebhookURL={setShouldPromptForWebhookURL}
           setShouldPromptForAirtableAPI_KEY={setShouldPromptForAirtableAPI_KEY}
+          setShouldPromptForUnsplashAPI_KEY={setShouldPromptForUnsplashAPI_KEY}
         />
       </Box>
     </Box>

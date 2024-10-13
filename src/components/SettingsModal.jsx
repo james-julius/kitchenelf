@@ -11,13 +11,18 @@ import {
     useDisclosure,
 } from '@chakra-ui/react'
 
-export default function SettingsModal({ setShouldPromptForWebhookURL, setShouldPromptForAirtableAPI_KEY }) {
+export default function SettingsModal({ setShouldPromptForWebhookURL, setShouldPromptForAirtableAPI_KEY, setShouldPromptForUnsplashAPI_KEY }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
 
   const clearAirtableAPIKey = () => {
     localStorage.removeItem('airtableAPI_KEY');
     setShouldPromptForAirtableAPI_KEY(true);
+  };
+
+  const clearUnsplashAPIKey = () => {
+    localStorage.removeItem('unsplashAPI_KEY');
+    setShouldPromptForUnsplashAPI_KEY(true);
   };
 
   const clearWebhookURL = () => {
@@ -42,6 +47,7 @@ export default function SettingsModal({ setShouldPromptForWebhookURL, setShouldP
                 <ModalBody>
                     <Button m={2} onClick={() => { clearWebhookURL() }}>Reset Discord Webhook URL</Button>
                     <Button m={2} onClick={() => { clearAirtableAPIKey() }}>Reset Airtable API Key</Button>
+                    <Button m={2} onClick={() => { clearUnsplashAPIKey() }}>Reset Unsplash API Key</Button>
                     <Button m={2} onClick={reloadPage}>Refresh Page</Button>
                 </ModalBody>
                 <ModalFooter>
