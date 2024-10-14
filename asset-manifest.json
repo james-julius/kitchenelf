@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/kitchen-food-ordering/static/css/main.f16982d8.css",
-    "main.js": "/kitchen-food-ordering/static/js/main.2407fb32.js",
-    "static/js/787.4987f6c1.chunk.js": "/kitchen-food-ordering/static/js/787.4987f6c1.chunk.js",
+    "main.css": "/kitchen-food-ordering/static/css/main.45160e82.css",
+    "main.js": "/kitchen-food-ordering/static/js/main.0b20209d.js",
+    "static/js/787.a1fd7bf2.chunk.js": "/kitchen-food-ordering/static/js/787.a1fd7bf2.chunk.js",
     "index.html": "/kitchen-food-ordering/index.html",
-    "main.f16982d8.css.map": "/kitchen-food-ordering/static/css/main.f16982d8.css.map",
-    "main.2407fb32.js.map": "/kitchen-food-ordering/static/js/main.2407fb32.js.map",
-    "787.4987f6c1.chunk.js.map": "/kitchen-food-ordering/static/js/787.4987f6c1.chunk.js.map"
+    "main.45160e82.css.map": "/kitchen-food-ordering/static/css/main.45160e82.css.map",
+    "main.0b20209d.js.map": "/kitchen-food-ordering/static/js/main.0b20209d.js.map",
+    "787.a1fd7bf2.chunk.js.map": "/kitchen-food-ordering/static/js/787.a1fd7bf2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f16982d8.css",
-    "static/js/main.2407fb32.js"
+    "static/css/main.45160e82.css",
+    "static/js/main.0b20209d.js"
   ]
 }
