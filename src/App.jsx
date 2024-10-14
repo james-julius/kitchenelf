@@ -124,7 +124,7 @@ const App = () => {
         <AddNewItemModal onAddNewItem={handleRefreshItems} existingItems={items}/>
       </Box>
       {loading ? <Skeleton h="full" w="full" /> :
-        <SimpleGrid mt={20} mb={5} px={5} columns={[2, 3, 3, 5, 'auto']} spacing={5} h="full" overflow="scroll" flexGrow zIndex={1} pt={5} pb={20}>
+        <SimpleGrid mt={20} mb={5} px={5} columns={[2, 4, 4, 5, 'auto']} spacing={5} h="full" overflow="scroll" flexGrow zIndex={1} pt={5} pb={20}>
           {filteredItems.length ? (
             filteredItems
               .sort(function (a, b) {
