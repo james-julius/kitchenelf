@@ -108,7 +108,7 @@ const App = () => {
   }, []);
 
 
-  const filteredItems = items.filter((item) =>
+  const filteredItems = (items || []).filter((item) =>
     item.fields.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
