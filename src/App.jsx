@@ -121,7 +121,7 @@ const App = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="nowrap" p={5} w="100dvw" gap={3} position="fixed" zIndex={2} top={0} h={20} bg="gray.100" border="1px solid lightgray">
         <Input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="Search for an existing item"  bg="white"/>
         <Text>or</Text>
-        <AddNewItemModal onAddNewItem={handleRefreshItems} />
+        <AddNewItemModal onAddNewItem={handleRefreshItems} existingItems={items}/>
       </Box>
       {loading ? <Skeleton h="full" w="full" /> :
         <SimpleGrid mt={20} mb={5} px={5} columns={[2, 3, 3, 5, 'auto']} spacing={5} h="full" overflow="scroll" flexGrow zIndex={1} pt={5} pb={20}>

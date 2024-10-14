@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
     Modal,
     ModalOverlay,
@@ -15,13 +15,31 @@ import {
     useToast,
 } from '@chakra-ui/react';
 
-export default function AddNewItemModal ({ onAddNewItem }) {
+export default function AddNewItemModal ({ onAddNewItem, existingItems }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [newItemName, setNewItemName] = useState('');
     const toast = useToast();
+    const inputRef = useRef(null);
 
     const handleAddItem = async () => {
         const airtableAPI_KEY = localStorage.getItem('airtableAPI_KEY');
+
+        // Check if item already exists
+        const itemExists = existingItems.some(item =>
+            item.fields.name.toLowerCase() === newItemName.toLowerCase()
+        );
+
+        if (itemExists) {
+            toast({
+                title: "Error",
+                description: `"${newItemName}" already exists in your list.`,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+            return;
+        }
+
         try {
             const response = await fetch('https://api.airtable.com/v0/app23j6JIk0UIbaxW/items', {
                 method: 'POST',
@@ -67,7 +85,7 @@ export default function AddNewItemModal ({ onAddNewItem }) {
     return (
         <>
             <Button colorScheme='green' px={6} onClick={onOpen}>Add new item</Button>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={inputRef}>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Add New Item</ModalHeader>
@@ -76,6 +94,7 @@ export default function AddNewItemModal ({ onAddNewItem }) {
                         <FormControl>
                             <FormLabel>Item name</FormLabel>
                             <Input
+                                ref={inputRef}
                                 value={newItemName}
                                 onChange={(e) => setNewItemName(e.target.value)}
                                 placeholder="Enter new item name"

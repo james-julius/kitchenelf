@@ -1,7 +1,6 @@
 {
   "name": "food-ordering",
   "version": "0.1.0",
-  "homepage": "https://simonwisdom.github.io/kitchen-food-ordering",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",
